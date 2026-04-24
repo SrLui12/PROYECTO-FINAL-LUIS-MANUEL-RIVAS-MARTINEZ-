@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rectoría - ITLA</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;900&family=Barlow+Condensed:wght@700;900&display=swap" rel="stylesheet"/>
+  <style>
+    :root { --itla-blue:#003087; --itla-red:#e63b2e; --itla-dark:#001a4d; --itla-light:#f4f6fb; }
+    body { font-family:'Barlow',sans-serif; }
+    .navbar { background-color:var(--itla-blue) !important; }
+    .nav-link { color:rgba(255,255,255,.9) !important; font-weight:600; }
+    .nav-link:hover { color:#fff !important; }
+    .dropdown-menu { border-top:3px solid var(--itla-red); }
+    .btn-itla { background-color:var(--itla-red); color:#fff; font-weight:700; border:none; }
+    .btn-itla:hover { background-color:#c03025; color:#fff; }
+    /* Page hero with diagonal accent — diferente a las otras páginas */
+    .page-hero {
+      background: linear-gradient(120deg, var(--itla-dark) 0%, var(--itla-blue) 55%, #1a4fa0 100%);
+      color:#fff;
+      padding:70px 0 55px;
+      position:relative;
+      overflow:hidden;
+    }
+    .page-hero::before {
+      content:'';
+      position:absolute;
+      bottom:-40px; right:-40px;
+      width:300px; height:300px;
+      border-radius:50%;
+      background:rgba(230,59,46,.12);
+    }
+    .page-hero::after {
+      content:'';
+      position:absolute;
+      top:-60px; right:200px;
+      width:180px; height:180px;
+      border-radius:50%;
+      background:rgba(255,255,255,.05);
+    }
+    .page-hero h1 { font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:3rem; }
+    .breadcrumb-item a { color:rgba(255,255,255,.7); text-decoration:none; }
+    .breadcrumb-item.active { color:#fff; }
+    .breadcrumb-item+.breadcrumb-item::before { color:rgba(255,255,255,.5); }
+    .section-title { font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:2.2rem; color:var(--itla-blue); }
+    .section-title span { color:var(--itla-red); }
+    .title-line { width:55px; height:4px; background:var(--itla-red); display:block; margin-bottom:16px; }
+    /* Rector photo card */
+    .rector-photo-wrap {
+      position:relative;
+    }
+    .rector-photo-wrap img {
+      border-radius:12px;
+      width:100%;
+      object-fit:cover;
+      box-shadow:0 16px 48px rgba(0,48,135,.22);
+    }
+    .rector-badge {
+      position:absolute;
+      bottom:-18px; left:24px;
+      background:var(--itla-red);
+      color:#fff;
+      padding:10px 22px;
+      border-radius:6px;
+      font-weight:700;
+      font-size:.9rem;
+      box-shadow:0 4px 14px rgba(230,59,46,.35);
+    }
+    /* Timeline para trayectoria */
+    .timeline { position:relative; padding-left:32px; }
+    .timeline::before {
+      content:'';
+      position:absolute;
+      left:10px; top:0; bottom:0;
+      width:2px;
+      background:linear-gradient(to bottom, var(--itla-blue), var(--itla-red));
+    }
+    .tl-item { position:relative; margin-bottom:28px; }
+    .tl-dot {
+      position:absolute;
+      left:-26px; top:4px;
+      width:14px; height:14px;
+      border-radius:50%;
+      background:var(--itla-red);
+      border:2px solid #fff;
+      box-shadow:0 0 0 3px var(--itla-red);
+    }
+    .tl-item h6 { font-weight:700; color:var(--itla-blue); margin-bottom:4px; }
+    .tl-item p { font-size:.9rem; color:#555; margin-bottom:0; }
+    /* Stat cards */
+    .stat-card {
+      background:#fff;
+      border-radius:10px;
+      padding:24px 18px;
+      text-align:center;
+      box-shadow:0 4px 18px rgba(0,0,0,.07);
+      border-left:4px solid var(--itla-red);
+      transition:.25s;
+    }
+    .stat-card:hover { transform:translateY(-4px); box-shadow:0 8px 24px rgba(0,0,0,.12); }
+    .stat-card .num { font-family:'Barlow Condensed',sans-serif; font-size:2.4rem; font-weight:900; color:var(--itla-blue); }
+    .stat-card .lbl { font-size:.82rem; color:#666; text-transform:uppercase; letter-spacing:.5px; }
+    /* Quote block */
+    .quote-block {
+      background:var(--itla-blue);
+      color:#fff;
+      border-radius:12px;
+      padding:36px 40px;
+      position:relative;
+    }
+    .quote-block::before {
+      content:'\201C';
+      font-family:'Barlow Condensed',sans-serif;
+      font-size:7rem;
+      color:rgba(255,255,255,.12);
+      position:absolute;
+      top:-10px; left:20px;
+      line-height:1;
+    }
+    .quote-block p { font-size:1.15rem; font-style:italic; opacity:.95; position:relative; }
+    .quote-block .author { font-weight:700; color:#f8c84e; font-style:normal; font-size:.95rem; }
+    /* Ally logos section */
+    .ally-icon { font-size:2rem; color:var(--itla-blue); opacity:.6; }
+    /* Focus areas */
+    .focus-card {
+      background:#fff;
+      border-radius:10px;
+      padding:28px 22px;
+      text-align:center;
+      box-shadow:0 4px 16px rgba(0,0,0,.07);
+      border-top:4px solid var(--itla-blue);
+      transition:.25s;
+      height:100%;
+    }
+    .focus-card:hover { border-color:var(--itla-red); transform:translateY(-4px); }
+    .focus-card .bi { font-size:2.2rem; color:var(--itla-red); display:block; margin-bottom:12px; }
+    .focus-card h5 { font-weight:700; color:var(--itla-blue); margin-bottom:8px; }
+    footer { background:var(--itla-dark); color:rgba(255,255,255,.75); font-size:.88rem; }
+    footer h6 { color:#fff; font-weight:700; text-transform:uppercase; letter-spacing:.5px; margin-bottom:14px; }
+    footer a { color:rgba(255,255,255,.65); text-decoration:none; }
+    footer a:hover { color:#fff; }
+    .footer-bottom { border-top:1px solid rgba(255,255,255,.1); padding-top:18px; font-size:.8rem; }
+    .social-icon { width:38px; height:38px; background:rgba(255,255,255,.1); border-radius:6px; display:inline-flex; align-items:center; justify-content:center; color:#fff; transition:.2s; }
+    .social-icon:hover { background:var(--itla-red); }
+  </style>
+</head>
+<body>
+
+<!-- Top bar -->
+<div class="bg-dark py-1 d-none d-md-block">
+  <div class="container d-flex justify-content-between align-items-center" style="font-size:.82rem;">
+    <span class="text-white-50"><i class="bi bi-telephone-fill me-1"></i> (809) 567-4852</span>
+    <div>
+      <a href="https://aulavirtual.itla.edu.do" class="text-white-50 me-3 text-decoration-none">Aula Virtual</a>
+      <a href="https://sigeiacademico.itla.edu.do" class="text-white-50 me-3 text-decoration-none">Campus Virtual</a>
+      <a href="transparencia.html" class="text-white-50 text-decoration-none">Transparencia</a>
+    </div>
+  </div>
+</div>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top shadow">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">
+      <img src="https://itla.edu.do/wp-content/uploads/2025/02/logo-itla-blanco.png" alt="ITLA" height="48"/>
+    </a>
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navMain">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 gap-1">
+        <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle active" href="#" data-bs-toggle="dropdown">Sobre ITLA</a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="quienes-somos.html">Quiénes somos</a></li>
+            <li><a class="dropdown-item" href="historia.html">Historia</a></li>
+            <li><a class="dropdown-item active" href="rectoria.html">Rectoría</a></li>
+            <li><a class="dropdown-item" href="calidad-gestion.html">Calidad en la Gestión</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Oferta Académica</a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="oferta-academica.html">Técnico Superior</a></li>
+          </ul>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="cafe-digital.html">Café Digital</a></li>
+        <li class="nav-item"><a class="nav-link" href="gestion-docente.html">Gestión Docente</a></li>
+        <li class="nav-item"><a class="nav-link" href="transparencia.html">Transparencia</a></li>
+        <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
+        <li class="nav-item ms-2">
+          <a class="btn btn-itla btn-sm px-3" href="https://sigeiacademico.itla.edu.do">Inscríbete</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Page Hero -->
+<section class="page-hero">
+  <div class="container position-relative">
+    <nav aria-label="breadcrumb" class="mb-3">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="index.html"><i class="bi bi-house-fill me-1"></i>Inicio</a></li>
+        <li class="breadcrumb-item"><a href="#">Sobre ITLA</a></li>
+        <li class="breadcrumb-item active">Rectoría</li>
+      </ol>
+    </nav>
+    <div class="row align-items-center">
+      <div class="col-lg-8">
+        <span class="badge mb-3 px-3 py-2" style="background:var(--itla-red);font-size:.75rem;letter-spacing:1px;text-transform:uppercase;">Liderazgo Institucional</span>
+        <h1>Rectoría <span style="color:#f8c84e;">ITLA</span></h1>
+        <p class="lead mb-0" style="opacity:.85;">Conoce al líder que guía la misión tecnológica y educativa del Instituto Tecnológico de Las Américas.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Rector Profile -->
+<section class="py-5">
+  <div class="container">
+    <div class="row g-5 align-items-start">
+
+      <!-- Foto + datos rápidos -->
+      <div class="col-lg-4">
+        <div class="rector-photo-wrap mb-4">
+          <img src="https://itla.edu.do/wp-content/uploads/2026/02/rectorITLA.png" alt="Jimmy Rosario Bernard, Rector ITLA"/>
+          <span class="rector-badge"><i class="bi bi-person-badge-fill me-2"></i>Rector ITLA</span>
+        </div>
+
+        <!-- Quick info card -->
+        <div class="card border-0 shadow-sm mt-4" style="border-top:4px solid var(--itla-blue)!important; border-radius:10px;">
+          <div class="card-body p-4">
+            <h6 class="fw-bold mb-3" style="color:var(--itla-blue);text-transform:uppercase;letter-spacing:.5px;font-size:.82rem;">Datos del Rector</h6>
+            <ul class="list-unstyled mb-0">
+              <li class="mb-3 d-flex align-items-start gap-2">
+                <i class="bi bi-person-fill mt-1" style="color:var(--itla-red);flex-shrink:0;"></i>
+                <div><strong class="d-block" style="font-size:.88rem;">Nombre</strong><span class="text-muted" style="font-size:.88rem;">Jimmy Rosario Bernard</span></div>
+              </li>
+              <li class="mb-3 d-flex align-items-start gap-2">
+                <i class="bi bi-mortarboard-fill mt-1" style="color:var(--itla-red);flex-shrink:0;"></i>
+                <div><strong class="d-block" style="font-size:.88rem;">Formación</strong><span class="text-muted" style="font-size:.88rem;">Doctor en Ingeniería Informática</span></div>
+              </li>
+              <li class="mb-3 d-flex align-items-start gap-2">
+                <i class="bi bi-building mt-1" style="color:var(--itla-red);flex-shrink:0;"></i>
+                <div><strong class="d-block" style="font-size:.88rem;">Institución</strong><span class="text-muted" style="font-size:.88rem;">Instituto Tecnológico de Las Américas</span></div>
+              </li>
+              <li class="mb-3 d-flex align-items-start gap-2">
+                <i class="bi bi-calendar-check mt-1" style="color:var(--itla-red);flex-shrink:0;"></i>
+                <div><strong class="d-block" style="font-size:.88rem;">Experiencia</strong><span class="text-muted" style="font-size:.88rem;">Más de 25 años en el sector TIC</span></div>
+              </li>
+              <li class="d-flex align-items-start gap-2">
+                <i class="bi bi-globe2 mt-1" style="color:var(--itla-red);flex-shrink:0;"></i>
+                <div><strong class="d-block" style="font-size:.88rem;">Especialidad</strong><span class="text-muted" style="font-size:.88rem;">Gobernanza TIC, IA y GovTech</span></div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Biografía -->
+      <div class="col-lg-8">
+        <span class="title-line"></span>
+        <h2 class="section-title mb-4">Jimmy Rosario <span>Bernard</span></h2>
+
+        <p class="lead text-muted mb-3">Servidor público comprometido con el desarrollo de la República Dominicana y apasionado de la transformación digital.</p>
+
+        <p>Su permanencia profesional y aporte en su área de conocimiento por más de 25 años ininterrumpidos lo ha preparado para liderar el pulso tecnológico de la nación. Desde la Universidad Autónoma de Santo Domingo (UASD), el Ministerio de Educación (MINERD) y el Ministerio Administrativo de la Presidencia (MAPRE), su misión ha sido convertir la visión estratégica en realidades concretas.</p>
+
+        <p>Ha coordinado equipos de más de 1,500 profesionales construyendo la soberanía digital del país, gestionando inversiones superiores a los <strong>90 millones de dólares</strong> con la mayor pulcritud en el manejo de fondos públicos.</p>
+
+        <p>Ha colaborado con gigantes tecnológicos como <strong>Microsoft, Google y Huawei</strong>, así como con el <strong>Programa de las Naciones Unidas para el Desarrollo (PNUD)</strong>, posicionando a la República Dominicana como referente regional en GovTech y EdTech.</p>
+
+        <p>Su enfoque actual es la <strong>Gobernanza Tecnológica</strong> y la <strong>Inteligencia Artificial Aplicada</strong>, buscando una innovación sostenible y ética para nuestra sociedad.</p>
+
+        <!-- Quote -->
+        <div class="quote-block mt-4">
+          <p class="mb-3">"Soy Jimmy Rosario y estoy listo para seguir sirviendo a mi país. El futuro se construye con educación, tecnología y corazón."</p>
+          <span class="author">— Jimmy Rosario Bernard, Rector del ITLA</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Stats -->
+<section class="py-5" style="background:var(--itla-light);">
+  <div class="container">
+    <div class="text-center mb-5">
+      <span class="title-line mx-auto"></span>
+      <h2 class="section-title">Trayectoria en <span>Números</span></h2>
+      <p class="text-muted">El impacto de una carrera dedicada al desarrollo tecnológico del país</p>
+    </div>
+    <div class="row g-4">
+      <div class="col-6 col-md-3">
+        <div class="stat-card">
+          <div class="num">25+</div>
+          <div class="lbl">Años de experiencia</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-card">
+          <div class="num">$90M</div>
+          <div class="lbl">Inversiones gestionadas</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-card">
+          <div class="num">1,500+</div>
+          <div class="lbl">Profesionales coordinados</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-card">
+          <div class="num">2M+</div>
+          <div class="lbl">Estudiantes beneficiados</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Trayectoria -->
+<section class="py-5">
+  <div class="container">
+    <div class="row g-5">
+      <div class="col-lg-6">
+        <span class="title-line"></span>
+        <h2 class="section-title mb-4">Trayectoria <span>Profesional</span></h2>
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <h6>Instituto Tecnológico de Las Américas — Rector</h6>
+            <p>Designado por el Presidente Luis Abinader para liderar la institución tecnológica más importante del país.</p>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <h6>Ministerio Administrativo de la Presidencia (MAPRE)</h6>
+            <p>Coordinó la transformación digital institucional y la soberanía tecnológica del Estado dominicano.</p>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <h6>Ministerio de Educación (MINERD)</h6>
+            <p>Plataformas que sostienen los sueños educativos de más de dos millones de estudiantes.</p>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <h6>Universidad Autónoma de Santo Domingo (UASD)</h6>
+            <p>Docente y estratega; catedrático de la Universidad Primada de América por más de dos décadas.</p>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <h6>Comunicación y Panelismo</h6>
+            <p>Panelista de programas de educación tecnológica en televisión y radio dominicana.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Áreas de enfoque -->
+      <div class="col-lg-6">
+        <span class="title-line"></span>
+        <h2 class="section-title mb-4">Áreas de <span>Enfoque</span></h2>
+        <div class="row g-3">
+          <div class="col-sm-6">
+            <div class="focus-card">
+              <i class="bi bi-cpu-fill"></i>
+              <h5>Inteligencia Artificial</h5>
+              <p class="small text-muted mb-0">IA aplicada de manera ética y sostenible para el beneficio de la sociedad dominicana.</p>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="focus-card">
+              <i class="bi bi-shield-lock-fill"></i>
+              <h5>Ciberseguridad</h5>
+              <p class="small text-muted mb-0">Estrategia de Ciberseguridad como política de Estado para un entorno digital seguro.</p>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="focus-card">
+              <i class="bi bi-diagram-3-fill"></i>
+              <h5>GovTech</h5>
+              <p class="small text-muted mb-0">Gobierno Digital para optimizar recursos públicos y mejorar los servicios ciudadanos.</p>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="focus-card">
+              <i class="bi bi-mortarboard-fill"></i>
+              <h5>EdTech</h5>
+              <p class="small text-muted mb-0">Transformación de la educación tecnológica para preparar a la juventud dominicana.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Alianzas -->
+<section class="py-5" style="background:var(--itla-light);">
+  <div class="container">
+    <div class="text-center mb-4">
+      <span class="title-line mx-auto"></span>
+      <h2 class="section-title">Alianzas <span>Estratégicas</span></h2>
+      <p class="text-muted">Colaboraciones con organismos y empresas líderes a nivel mundial</p>
+    </div>
+    <div class="row g-4 justify-content-center align-items-center text-center">
+      <div class="col-6 col-md-2">
+        <div class="p-3">
+          <i class="bi bi-microsoft ally-icon"></i>
+          <div class="small fw-bold mt-2" style="color:var(--itla-blue);">Microsoft</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-2">
+        <div class="p-3">
+          <i class="bi bi-google ally-icon"></i>
+          <div class="small fw-bold mt-2" style="color:var(--itla-blue);">Google</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-2">
+        <div class="p-3">
+          <i class="bi bi-globe2 ally-icon"></i>
+          <div class="small fw-bold mt-2" style="color:var(--itla-blue);">Huawei</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-2">
+        <div class="p-3">
+          <i class="bi bi-building-fill ally-icon"></i>
+          <div class="small fw-bold mt-2" style="color:var(--itla-blue);">PNUD</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-2">
+        <div class="p-3">
+          <i class="bi bi-flag-fill ally-icon"></i>
+          <div class="small fw-bold mt-2" style="color:var(--itla-blue);">UASD</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-2">
+        <div class="p-3">
+          <i class="bi bi-award-fill ally-icon"></i>
+          <div class="small fw-bold mt-2" style="color:var(--itla-blue);">MINERD</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="py-5" style="background:var(--itla-blue);">
+  <div class="container text-center">
+    <h2 style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:2.4rem;" class="text-white mb-2">¿Listo para ser parte del <span style="color:#f8c84e;">ITLA?</span></h2>
+    <p class="text-white-50 mb-4">Únete a la institución que construye el futuro tecnológico de la República Dominicana.</p>
+    <a href="https://sigeiacademico.itla.edu.do" class="btn btn-itla btn-lg px-5 me-2 me-md-3 mb-2">Inscríbete Ahora</a>
+    <a href="contacto.html" class="btn btn-outline-light btn-lg px-5 mb-2">Contáctanos</a>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="py-5">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-md-4">
+        <img src="https://itla.edu.do/wp-content/uploads/2025/02/logo-itla-blanco.png" alt="ITLA" height="50" class="mb-3"/>
+        <p>Instituto Tecnológico de Las Américas — La institución tecnológica líder de la República Dominicana.</p>
+        <div class="d-flex gap-2 mt-3">
+          <a href="#" class="social-icon"><i class="bi bi-facebook"></i></a>
+          <a href="#" class="social-icon"><i class="bi bi-twitter-x"></i></a>
+          <a href="#" class="social-icon"><i class="bi bi-instagram"></i></a>
+          <a href="#" class="social-icon"><i class="bi bi-youtube"></i></a>
+          <a href="#" class="social-icon"><i class="bi bi-linkedin"></i></a>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <h6>Institución</h6>
+        <ul class="list-unstyled">
+          <li class="mb-1"><a href="quienes-somos.html">Quiénes somos</a></li>
+          <li class="mb-1"><a href="historia.html">Historia</a></li>
+          <li class="mb-1"><a href="rectoria.html">Rectoría</a></li>
+          <li class="mb-1"><a href="calidad-gestion.html">Calidad</a></li>
+        </ul>
+      </div>
+      <div class="col-md-2">
+        <h6>Académico</h6>
+        <ul class="list-unstyled">
+          <li class="mb-1"><a href="oferta-academica.html">Oferta Académica</a></li>
+          <li class="mb-1"><a href="gestion-docente.html">Gestión Docente</a></li>
+          <li class="mb-1"><a href="cafe-digital.html">Café Digital</a></li>
+          <li class="mb-1"><a href="transparencia.html">Transparencia</a></li>
+        </ul>
+      </div>
+      <div class="col-md-4">
+        <h6>Contacto</h6>
+        <ul class="list-unstyled">
+          <li class="mb-2"><i class="bi bi-geo-alt-fill me-2 text-danger"></i>Autopista Las Américas Km 23, Santo Domingo Este</li>
+          <li class="mb-2"><i class="bi bi-telephone-fill me-2 text-danger"></i>(809) 567-4852</li>
+          <li class="mb-2"><i class="bi bi-envelope-fill me-2 text-danger"></i>info@itla.edu.do</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom mt-4 d-flex flex-column flex-md-row justify-content-between align-items-center text-white-50">
+      <span>&copy; 2026 ITLA - Instituto Tecnológico de Las Américas. Todos los derechos reservados.</span>
+      <span class="mt-2 mt-md-0">Hecho con <i class="bi bi-heart-fill text-danger"></i> en República Dominicana</span>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

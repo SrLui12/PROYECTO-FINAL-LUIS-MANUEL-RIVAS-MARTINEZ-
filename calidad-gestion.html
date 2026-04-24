@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Calidad en la Gestión - ITLA</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;900&family=Barlow+Condensed:wght@700;900&display=swap" rel="stylesheet"/>
+  <style>
+    :root { --itla-blue:#003087; --itla-red:#e63b2e; --itla-dark:#001a4d; --itla-light:#f4f6fb; }
+    body { font-family:'Barlow',sans-serif; }
+    .navbar { background-color:var(--itla-blue) !important; }
+    .nav-link { color:rgba(255,255,255,.9) !important; font-weight:600; }
+    .nav-link:hover { color:#fff !important; }
+    .dropdown-menu { border-top:3px solid var(--itla-red); }
+    .btn-itla { background-color:var(--itla-red); color:#fff; font-weight:700; border:none; }
+    .btn-itla:hover { background-color:#c03025; color:#fff; }
+    /* Page Hero — con acento geométrico diferente al de Rectoría */
+    .page-hero {
+      background: linear-gradient(135deg, var(--itla-dark) 0%, var(--itla-blue) 100%);
+      color:#fff;
+      padding:70px 0 55px;
+      position:relative;
+      overflow:hidden;
+    }
+    .page-hero::before {
+      content:'';
+      position:absolute;
+      top:-80px; right:-80px;
+      width:380px; height:380px;
+      border-radius:50%;
+      background:rgba(230,59,46,.10);
+    }
+    .page-hero::after {
+      content:'';
+      position:absolute;
+      bottom:-50px; left:30%;
+      width:200px; height:200px;
+      border-radius:50%;
+      background:rgba(255,255,255,.04);
+    }
+    .page-hero h1 { font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:3rem; }
+    .breadcrumb-item a { color:rgba(255,255,255,.7); text-decoration:none; }
+    .breadcrumb-item.active { color:#fff; }
+    .breadcrumb-item+.breadcrumb-item::before { color:rgba(255,255,255,.5); }
+    .section-title { font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:2.2rem; color:var(--itla-blue); }
+    .section-title span { color:var(--itla-red); }
+    .title-line { width:55px; height:4px; background:var(--itla-red); display:block; margin-bottom:16px; }
+    /* Activity cards */
+    .activity-card {
+      background:#fff;
+      border-radius:10px;
+      padding:26px 22px;
+      box-shadow:0 4px 18px rgba(0,0,0,.07);
+      border-left:4px solid var(--itla-red);
+      transition:.25s;
+      height:100%;
+    }
+    .activity-card:hover { transform:translateY(-4px); box-shadow:0 8px 24px rgba(0,0,0,.12); }
+    .activity-card .bi { font-size:1.8rem; color:var(--itla-red); display:block; margin-bottom:12px; }
+    .activity-card h5 { font-weight:700; color:var(--itla-blue); font-size:1rem; margin-bottom:6px; }
+    /* Award cards */
+    .award-card {
+      background:#fff;
+      border-radius:10px;
+      overflow:hidden;
+      box-shadow:0 4px 18px rgba(0,0,0,.08);
+      transition:.25s;
+      height:100%;
+    }
+    .award-card:hover { transform:translateY(-4px); box-shadow:0 10px 28px rgba(0,0,0,.13); }
+    .award-card .award-header {
+      padding:20px 22px;
+      background:var(--itla-blue);
+      color:#fff;
+    }
+    .award-card .award-header.gold { background:linear-gradient(135deg,#b8860b,#f0c040); color:#1a1a1a; }
+    .award-card .award-header.silver { background:linear-gradient(135deg,#708090,#b0bec5); }
+    .award-card .award-header.accent { background:var(--itla-red); }
+    .award-card .award-header .year {
+      font-family:'Barlow Condensed',sans-serif;
+      font-size:2rem;
+      font-weight:900;
+      line-height:1;
+    }
+    .award-card .award-header .medal { font-size:1.4rem; }
+    .award-card .card-body { padding:18px 22px; }
+    /* ISO badge */
+    .iso-badge {
+      background:var(--itla-blue);
+      color:#fff;
+      border-radius:12px;
+      padding:32px 28px;
+      text-align:center;
+      position:relative;
+      overflow:hidden;
+    }
+    .iso-badge::before {
+      content:'ISO';
+      font-family:'Barlow Condensed',sans-serif;
+      font-size:7rem;
+      font-weight:900;
+      color:rgba(255,255,255,.06);
+      position:absolute;
+      bottom:-20px; right:-10px;
+      line-height:1;
+    }
+    .iso-badge .iso-num {
+      font-family:'Barlow Condensed',sans-serif;
+      font-size:2.6rem;
+      font-weight:900;
+      color:#f8c84e;
+    }
+    /* Document download cards */
+    .doc-card {
+      background:#fff;
+      border-radius:10px;
+      padding:22px 20px;
+      box-shadow:0 4px 14px rgba(0,0,0,.07);
+      display:flex;
+      align-items:center;
+      gap:16px;
+      text-decoration:none;
+      color:inherit;
+      transition:.25s;
+      border:1px solid rgba(0,48,135,.08);
+    }
+    .doc-card:hover { box-shadow:0 8px 24px rgba(0,0,0,.12); transform:translateY(-3px); color:var(--itla-blue); border-color:var(--itla-blue); }
+    .doc-card .doc-icon {
+      width:52px; height:52px;
+      background:var(--itla-light);
+      border-radius:8px;
+      display:flex; align-items:center; justify-content:center;
+      flex-shrink:0;
+      font-size:1.6rem;
+      color:var(--itla-red);
+    }
+    .doc-card .doc-name { font-weight:700; font-size:.95rem; color:var(--itla-blue); }
+    .doc-card .doc-type { font-size:.78rem; color:#888; text-transform:uppercase; letter-spacing:.5px; }
+    /* Related pages */
+    .related-card {
+      background:#fff;
+      border-radius:10px;
+      padding:22px 20px;
+      text-align:center;
+      box-shadow:0 4px 14px rgba(0,0,0,.07);
+      text-decoration:none;
+      color:inherit;
+      transition:.25s;
+      display:block;
+      border-bottom:3px solid transparent;
+    }
+    .related-card:hover { border-color:var(--itla-red); transform:translateY(-4px); color:var(--itla-blue); }
+    .related-card .bi { font-size:2rem; color:var(--itla-blue); display:block; margin-bottom:10px; }
+    .related-card span { font-weight:600; font-size:.9rem; }
+    /* Contact strip */
+    .contact-strip {
+      background:var(--itla-light);
+      border-left:4px solid var(--itla-red);
+      border-radius:0 10px 10px 0;
+      padding:20px 24px;
+    }
+    footer { background:var(--itla-dark); color:rgba(255,255,255,.75); font-size:.88rem; }
+    footer h6 { color:#fff; font-weight:700; text-transform:uppercase; letter-spacing:.5px; margin-bottom:14px; }
+    footer a { color:rgba(255,255,255,.65); text-decoration:none; }
+    footer a:hover { color:#fff; }
+    .footer-bottom { border-top:1px solid rgba(255,255,255,.1); padding-top:18px; font-size:.8rem; }
+    .social-icon { width:38px; height:38px; background:rgba(255,255,255,.1); border-radius:6px; display:inline-flex; align-items:center; justify-content:center; color:#fff; transition:.2s; }
+    .social-icon:hover { background:var(--itla-red); }
+  </style>
+</head>
+<body>
+
+<!-- Top bar -->
+<div class="bg-dark py-1 d-none d-md-block">
+  <div class="container d-flex justify-content-between align-items-center" style="font-size:.82rem;">
+    <span class="text-white-50"><i class="bi bi-telephone-fill me-1"></i> (809) 738-4852</span>
+    <div>
+      <a href="https://aulavirtual.itla.edu.do" class="text-white-50 me-3 text-decoration-none">Aula Virtual</a>
+      <a href="https://sigeiacademico.itla.edu.do" class="text-white-50 me-3 text-decoration-none">Campus Virtual</a>
+      <a href="transparencia.html" class="text-white-50 text-decoration-none">Transparencia</a>
+    </div>
+  </div>
+</div>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top shadow">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">
+      <img src="https://itla.edu.do/wp-content/uploads/2025/02/logo-itla-blanco.png" alt="ITLA" height="48"/>
+    </a>
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navMain">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 gap-1">
+        <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle active" href="#" data-bs-toggle="dropdown">Sobre ITLA</a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="quienes-somos.html">Quiénes somos</a></li>
+            <li><a class="dropdown-item" href="historia.html">Historia</a></li>
+            <li><a class="dropdown-item" href="rectoria.html">Rectoría</a></li>
+            <li><a class="dropdown-item active" href="calidad-gestion.html">Calidad en la Gestión</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Oferta Académica</a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="oferta-academica.html">Técnico Superior</a></li>
+          </ul>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="cafe-digital.html">Café Digital</a></li>
+        <li class="nav-item"><a class="nav-link" href="gestion-docente.html">Gestión Docente</a></li>
+        <li class="nav-item"><a class="nav-link" href="transparencia.html">Transparencia</a></li>
+        <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
+        <li class="nav-item ms-2">
+          <a class="btn btn-itla btn-sm px-3" href="https://sigeiacademico.itla.edu.do">Inscríbete</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Page Hero -->
+<section class="page-hero">
+  <div class="container position-relative">
+    <nav aria-label="breadcrumb" class="mb-3">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="index.html"><i class="bi bi-house-fill me-1"></i>Inicio</a></li>
+        <li class="breadcrumb-item"><a href="#">Sobre ITLA</a></li>
+        <li class="breadcrumb-item active">Calidad en la Gestión</li>
+      </ol>
+    </nav>
+    <div class="row align-items-center">
+      <div class="col-lg-8">
+        <span class="badge mb-3 px-3 py-2" style="background:var(--itla-red);font-size:.75rem;letter-spacing:1px;text-transform:uppercase;">Excelencia Institucional</span>
+        <h1>Calidad en la <span style="color:#f8c84e;">Gestión</span></h1>
+        <p class="lead mb-0" style="opacity:.85;">Comprometidos con la mejora continua, la satisfacción ciudadana y los más altos estándares de calidad institucional.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Intro -->
+<section class="py-5">
+  <div class="container">
+    <div class="row g-5 align-items-center">
+      <div class="col-lg-7">
+        <span class="title-line"></span>
+        <h2 class="section-title mb-3">Departamento de <span>Calidad</span></h2>
+        <p class="lead text-muted mb-3">En el ITLA estamos comprometidos con la satisfacción de nuestros clientes, a través de la mejora continua de nuestros procesos.</p>
+        <p>El Departamento de Calidad en la Gestión es el encargado del sistema de garantía interno de calidad. Vela por el cumplimiento de las políticas y procedimientos institucionales, asegurando que cada proceso refleje los más altos estándares académicos y administrativos.</p>
+        <p>Nuestro compromiso con la calidad ha sido reconocido en múltiples ocasiones a nivel nacional, siendo el ITLA la primera institución académica en recibir el <strong>Premio Nacional a la Calidad</strong> del Ministerio de Administración Pública.</p>
+        <div class="contact-strip mt-4">
+          <div class="d-flex flex-wrap gap-4">
+            <div class="d-flex align-items-center gap-2">
+              <i class="bi bi-envelope-fill" style="color:var(--itla-red);font-size:1.1rem;"></i>
+              <div>
+                <div class="small text-muted">Correo</div>
+                <a href="mailto:calidad@itla.edu.do" class="fw-bold text-decoration-none" style="color:var(--itla-blue);font-size:.9rem;">calidad@itla.edu.do</a>
+              </div>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+              <i class="bi bi-telephone-fill" style="color:var(--itla-red);font-size:1.1rem;"></i>
+              <div>
+                <div class="small text-muted">Teléfono</div>
+                <a href="tel:8097384852" class="fw-bold text-decoration-none" style="color:var(--itla-blue);font-size:.9rem;">809-738-4852</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-5">
+        <!-- ISO cert highlight -->
+        <div class="iso-badge mb-3">
+          <i class="bi bi-patch-check-fill" style="font-size:2.5rem;color:#f8c84e;"></i>
+          <div class="iso-num mt-2">ISO 9001</div>
+          <div class="fw-bold mt-1">Norma 2015</div>
+          <p class="small mt-2 mb-0" style="opacity:.8;">Certificación internacional en Sistemas de Gestión de Calidad, garantía de procesos de excelencia.</p>
+        </div>
+        <div class="row g-3">
+          <div class="col-6">
+            <div class="rounded-3 p-3 text-center" style="background:var(--itla-red);color:#fff;min-height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+              <div style="font-family:'Barlow Condensed',sans-serif;font-size:2rem;font-weight:900;">5+</div>
+              <div style="font-size:.78rem;opacity:.9;">Premios Nacionales</div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="rounded-3 p-3 text-center" style="background:var(--itla-light);min-height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+              <div style="font-family:'Barlow Condensed',sans-serif;font-size:2rem;font-weight:900;color:var(--itla-blue);">25+</div>
+              <div style="font-size:.78rem;color:#666;">Años de calidad</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Actividades principales -->
+<section class="py-5" style="background:var(--itla-light);">
+  <div class="container">
+    <div class="text-center mb-5">
+      <span class="title-line mx-auto"></span>
+      <h2 class="section-title">Principales <span>Actividades</span></h2>
+      <p class="text-muted">Las funciones clave que garantizan la excelencia en cada proceso institucional</p>
+    </div>
+    <div class="row g-4">
+      <div class="col-sm-6 col-lg-4">
+        <div class="activity-card">
+          <i class="bi bi-graph-up-arrow"></i>
+          <h5>Seguimiento a Procesos</h5>
+          <p class="small text-muted mb-0">Monitoreo continuo de los procesos institucionales para asegurar el cumplimiento de los estándares establecidos.</p>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-4">
+        <div class="activity-card">
+          <i class="bi bi-clipboard2-check"></i>
+          <h5>Satisfacción de Servicios Académicos</h5>
+          <p class="small text-muted mb-0">Medición y evaluación periódica de la satisfacción de los servicios académicos ofrecidos a los estudiantes.</p>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-4">
+        <div class="activity-card">
+          <i class="bi bi-person-check"></i>
+          <h5>Satisfacción Docente</h5>
+          <p class="small text-muted mb-0">Evaluación del grado de satisfacción del cuerpo docente con el entorno y condiciones de trabajo.</p>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-4">
+        <div class="activity-card">
+          <i class="bi bi-chat-dots"></i>
+          <h5>Quejas y Sugerencias</h5>
+          <p class="small text-muted mb-0">Canal institucional para recibir, registrar y canalizar quejas y sugerencias de la comunidad ITLA.</p>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-4">
+        <div class="activity-card">
+          <i class="bi bi-shield-check"></i>
+          <h5>Cumplimiento ISO 9001-2015</h5>
+          <p class="small text-muted mb-0">Seguimiento al cumplimiento de las políticas y normas internacionales bajo el estándar ISO 9001:2015.</p>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-4">
+        <div class="activity-card">
+          <i class="bi bi-journal-bookmark"></i>
+          <h5>Políticas Institucionales</h5>
+          <p class="small text-muted mb-0">Velar por el cumplimiento de las políticas y procedimientos internos que rigen la institución.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Premios y reconocimientos -->
+<section class="py-5">
+  <div class="container">
+    <div class="text-center mb-5">
+      <span class="title-line mx-auto"></span>
+      <h2 class="section-title">Reconocimientos y <span>Premios</span></h2>
+      <p class="text-muted">Décadas de excelencia avaladas por los organismos más prestigiosos del país</p>
+    </div>
+    <div class="row g-4">
+      <!-- Gran Premio -->
+      <div class="col-sm-6 col-lg-3">
+        <div class="award-card">
+          <div class="award-header gold">
+            <div class="medal mb-1">🏆</div>
+            <div class="year">2012</div>
+          </div>
+          <div class="card-body">
+            <h6 class="fw-bold" style="color:var(--itla-blue);">Gran Premio Nacional a la Calidad</h6>
+            <p class="small text-muted mb-0">El más alto galardón en gestión pública de la República Dominicana.</p>
+          </div>
+        </div>
+      </div>
+      <!-- Oro 2010 -->
+      <div class="col-sm-6 col-lg-3">
+        <div class="award-card">
+          <div class="award-header gold">
+            <div class="medal mb-1">🥇</div>
+            <div class="year">2010</div>
+          </div>
+          <div class="card-body">
+            <h6 class="fw-bold" style="color:var(--itla-blue);">Premio Nacional — Medalla de Oro</h6>
+            <p class="small text-muted mb-0">Tercer año consecutivo con la máxima distinción de calidad.</p>
+          </div>
+        </div>
+      </div>
+      <!-- Oro 2009 -->
+      <div class="col-sm-6 col-lg-3">
+        <div class="award-card">
+          <div class="award-header gold">
+            <div class="medal mb-1">🥇</div>
+            <div class="year">2009</div>
+          </div>
+          <div class="card-body">
+            <h6 class="fw-bold" style="color:var(--itla-blue);">Premio Nacional — Medalla de Oro</h6>
+            <p class="small text-muted mb-0">Segundo reconocimiento consecutivo con Medalla de Oro.</p>
+          </div>
+        </div>
+      </div>
+      <!-- Oro 2008 -->
+      <div class="col-sm-6 col-lg-3">
+        <div class="award-card">
+          <div class="award-header gold">
+            <div class="medal mb-1">🥇</div>
+            <div class="year">2008</div>
+          </div>
+          <div class="card-body">
+            <h6 class="fw-bold" style="color:var(--itla-blue);">Premio Nacional — Medalla de Oro</h6>
+            <p class="small text-muted mb-0">Primera Medalla de Oro del Premio Nacional a la Calidad.</p>
+          </div>
+        </div>
+      </div>
+      <!-- Plata 2006 -->
+      <div class="col-sm-6 col-lg-3">
+        <div class="award-card">
+          <div class="award-header silver">
+            <div class="medal mb-1">🥈</div>
+            <div class="year">2006</div>
+          </div>
+          <div class="card-body">
+            <h6 class="fw-bold" style="color:var(--itla-blue);">Premio Nacional — Medalla de Plata</h6>
+            <p class="small text-muted mb-0">Primer reconocimiento nacional por excelencia en la gestión.</p>
+          </div>
+        </div>
+      </div>
+      <!-- SISMAP 2023 -->
+      <div class="col-sm-6 col-lg-3">
+        <div class="award-card">
+          <div class="award-header accent">
+            <div class="medal mb-1"><i class="bi bi-award-fill"></i></div>
+            <div class="year" style="font-size:1.6rem;">2023</div>
+          </div>
+          <div class="card-body">
+            <h6 class="fw-bold" style="color:var(--itla-blue);">SISMAP — 3er Lugar</h6>
+            <p class="small text-muted mb-0">Ranking de trayectoria de calidad en la gestión pública. Nov. 2023.</p>
+          </div>
+        </div>
+      </div>
+      <!-- MESCYT 2024 -->
+      <div class="col-sm-6 col-lg-3">
+        <div class="award-card">
+          <div class="award-header accent">
+            <div class="medal mb-1"><i class="bi bi-mortarboard-fill"></i></div>
+            <div class="year" style="font-size:1.6rem;">2024</div>
+          </div>
+          <div class="card-body">
+            <h6 class="fw-bold" style="color:var(--itla-blue);">Premio MESCYT de Excelencia</h6>
+            <p class="small text-muted mb-0">Evaluación quinquenal de excelencia académica. Jun. 2024.</p>
+          </div>
+        </div>
+      </div>
+      <!-- Carta Compromiso 2024 -->
+      <div class="col-sm-6 col-lg-3">
+        <div class="award-card">
+          <div class="award-header accent">
+            <div class="medal mb-1"><i class="bi bi-file-earmark-check-fill"></i></div>
+            <div class="year" style="font-size:1.6rem;">2024</div>
+          </div>
+          <div class="card-body">
+            <h6 class="fw-bold" style="color:var(--itla-blue);">Carta Compromiso al Ciudadano</h6>
+            <p class="small text-muted mb-0">Reconocimiento por trayectoria en implementación y cumplimiento. Sep. 2024.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Documentos -->
+<section class="py-5" style="background:var(--itla-light);">
+  <div class="container">
+    <div class="text-center mb-5">
+      <span class="title-line mx-auto"></span>
+      <h2 class="section-title">Documentos <span>Institucionales</span></h2>
+      <p class="text-muted">Accede a los planes, mapas y compromisos que rigen nuestra gestión de calidad</p>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <a href="https://itla.edu.do/wp-content/uploads/2026/03/Plan-Estrategico-Institucional-ITLA-2025-2028_compressed.pdf" target="_blank" class="doc-card">
+          <div class="doc-icon"><i class="bi bi-file-earmark-pdf-fill"></i></div>
+          <div>
+            <div class="doc-name">Plan Estratégico Institucional</div>
+            <div class="doc-type">PDF · 2025–2028</div>
+            <div class="small text-muted mt-1">Lineamientos estratégicos del ITLA para el período 2025–2028.</div>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-4">
+        <a href="https://itla.edu.do/wp-content/uploads/2026/03/Mapa-de-Procesos-Aprobado_compressed-1.pdf" target="_blank" class="doc-card">
+          <div class="doc-icon"><i class="bi bi-diagram-3-fill"></i></div>
+          <div>
+            <div class="doc-name">Mapa de Procesos</div>
+            <div class="doc-type">PDF · Versión aprobada</div>
+            <div class="small text-muted mt-1">Diagrama oficial de los procesos institucionales aprobados.</div>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-4">
+        <a href="https://itla.edu.do/wp-content/uploads/2025/02/CARTA-COMPROMISO-AL-CIUDADANO-ITLA-2023s.pdf" target="_blank" class="doc-card">
+          <div class="doc-icon"><i class="bi bi-file-earmark-text-fill"></i></div>
+          <div>
+            <div class="doc-name">Carta Compromiso al Ciudadano</div>
+            <div class="doc-type">PDF · 2023</div>
+            <div class="small text-muted mt-1">Compromisos de servicio al ciudadano de ITLA.</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Páginas relacionadas -->
+<section class="py-5">
+  <div class="container">
+    <div class="text-center mb-5">
+      <span class="title-line mx-auto"></span>
+      <h2 class="section-title">Páginas <span>Relacionadas</span></h2>
+    </div>
+    <div class="row g-4 justify-content-center">
+      <div class="col-sm-6 col-md-4">
+        <a href="https://itla.edu.do/quejas-y-sugerencias/" target="_blank" class="related-card">
+          <i class="bi bi-megaphone-fill"></i>
+          <span>Quejas y Sugerencias</span>
+          <p class="small text-muted mt-2 mb-0">Presenta tu queja o sugerencia de forma oficial.</p>
+        </a>
+      </div>
+      <div class="col-sm-6 col-md-4">
+        <a href="https://itla.edu.do/calidad-en-la-gestion/estadisticas-carta-compromiso/" target="_blank" class="related-card">
+          <i class="bi bi-bar-chart-fill"></i>
+          <span>Estadísticas Carta Compromiso</span>
+          <p class="small text-muted mt-2 mb-0">Indicadores de cumplimiento del compromiso ciudadano.</p>
+        </a>
+      </div>
+      <div class="col-sm-6 col-md-4">
+        <a href="transparencia.html" class="related-card">
+          <i class="bi bi-eye-fill"></i>
+          <span>Transparencia</span>
+          <p class="small text-muted mt-2 mb-0">Acceso a información pública de la institución.</p>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="py-5" style="background:var(--itla-blue);">
+  <div class="container text-center">
+    <h2 style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:2.4rem;" class="text-white mb-2">¿Tienes alguna <span style="color:#f8c84e;">consulta?</span></h2>
+    <p class="text-white-50 mb-4">El Departamento de Calidad está disponible para atender tus quejas, sugerencias e inquietudes.</p>
+    <a href="https://itla.edu.do/quejas-y-sugerencias/" target="_blank" class="btn btn-itla btn-lg px-5 me-2 me-md-3 mb-2">Quejas y Sugerencias</a>
+    <a href="contacto.html" class="btn btn-outline-light btn-lg px-5 mb-2">Contáctanos</a>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="py-5">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-md-4">
+        <img src="https://itla.edu.do/wp-content/uploads/2025/02/logo-itla-blanco.png" alt="ITLA" height="50" class="mb-3"/>
+        <p>Instituto Tecnológico de Las Américas — La institución tecnológica líder de la República Dominicana.</p>
+        <div class="d-flex gap-2 mt-3">
+          <a href="#" class="social-icon"><i class="bi bi-facebook"></i></a>
+          <a href="#" class="social-icon"><i class="bi bi-twitter-x"></i></a>
+          <a href="#" class="social-icon"><i class="bi bi-instagram"></i></a>
+          <a href="#" class="social-icon"><i class="bi bi-youtube"></i></a>
+          <a href="#" class="social-icon"><i class="bi bi-linkedin"></i></a>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <h6>Institución</h6>
+        <ul class="list-unstyled">
+          <li class="mb-1"><a href="quienes-somos.html">Quiénes somos</a></li>
+          <li class="mb-1"><a href="historia.html">Historia</a></li>
+          <li class="mb-1"><a href="rectoria.html">Rectoría</a></li>
+          <li class="mb-1"><a href="calidad-gestion.html">Calidad</a></li>
+        </ul>
+      </div>
+      <div class="col-md-2">
+        <h6>Académico</h6>
+        <ul class="list-unstyled">
+          <li class="mb-1"><a href="oferta-academica.html">Oferta Académica</a></li>
+          <li class="mb-1"><a href="gestion-docente.html">Gestión Docente</a></li>
+          <li class="mb-1"><a href="cafe-digital.html">Café Digital</a></li>
+          <li class="mb-1"><a href="transparencia.html">Transparencia</a></li>
+        </ul>
+      </div>
+      <div class="col-md-4">
+        <h6>Contacto</h6>
+        <ul class="list-unstyled">
+          <li class="mb-2"><i class="bi bi-geo-alt-fill me-2 text-danger"></i>Autopista Las Américas Km 23, Santo Domingo Este</li>
+          <li class="mb-2"><i class="bi bi-telephone-fill me-2 text-danger"></i>(809) 738-4852</li>
+          <li class="mb-2"><i class="bi bi-envelope-fill me-2 text-danger"></i>calidad@itla.edu.do</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom mt-4 d-flex flex-column flex-md-row justify-content-between align-items-center text-white-50">
+      <span>&copy; 2026 ITLA - Instituto Tecnológico de Las Américas. Todos los derechos reservados.</span>
+      <span class="mt-2 mt-md-0">Hecho con <i class="bi bi-heart-fill text-danger"></i> en República Dominicana</span>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
